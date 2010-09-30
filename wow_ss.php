@@ -53,10 +53,10 @@ function wow_ss_global() {
 
 	$wowss['get_array'] = array('realm','update_timer','display','region','data_path','image_type');
 	foreach ($wowss['get_array'] as $value) {
-		if($_GET[$value])
+		if(isset($_GET[$value]))
 			$wowss[$value] = trim(stripslashes($_GET[$value]));
 	}
-	$wowss['realm'] = str_replace('é','e',$wowss['realm']);
+	$wowss['realm'] = str_replace('ï¿½','e',$wowss['realm']);
 	
 	$wowss['us_xml'] = 'http://www.worldofwarcraft.com/realmstatus/status.xml';
 	$wowss['eu_xml'] = 'http://www.wow-europe.com/realmstatus/index.xml';
@@ -102,9 +102,9 @@ function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$data_pa
 	## Verify data path
 	if(is_dir($wowss['data_path'])) {
 
-		if(!$wowss['xml_url'])
+		if(!isset($wowss['xml_url']))
 			$wowss['xml_url'] = $wowss[strtolower($wowss['region']).'_xml'];
-		$xml_file = 'wowss-'. wow_ss_sfn($wowss['region']) .'-'. substr(md5($wowss['xml']),0,16) .'.xml';
+		$xml_file = 'wowss-'. wow_ss_sfn($wowss['region']) .'-'. substr(md5(''),0,16) .'.xml';
 		
 		## Check if we need to update XML cache
 		clearstatcache();
@@ -116,7 +116,7 @@ function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$data_pa
 			$update = true;
 		
 		## Fetch XML
-		if($update) {
+		if(isset($update) && $update) {
 			$data = @file_get_contents($wowss['xml_url']);
 			if(strlen($data) > 300) {
 				## Don't write data unless it is there
@@ -130,7 +130,7 @@ function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$data_pa
 		
 		## Parse XML
 		if($xml) {
-			$xml = str_replace('é','e',$xml);
+			$xml = str_replace('ï¿½','e',$xml);
 
 			## Parse US XML
 			if(strtolower($wowss['region']) == 'us') {
@@ -182,7 +182,7 @@ function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$data_pa
 		else
 			$update = true;
 		
-		if($update) {
+		if(isset($update) && $update) {
 			## Write image
 			if($wowss['show_language'] == 'yes')
 				$wowss[$realm_status['type']] .= ' '. trim(strtoupper($realm_status['language']));
