@@ -224,7 +224,7 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 		
 		if(isset($update) && $update) {
 			## Write image
-			if($wowss['show_language'] == 'yes')
+			if(isset($wowss['show_language']) && $wowss['show_language'] == 'yes')
 				$wowss[$realm_status['type']] .= ' '. trim(strtoupper($realm_status['language']));
 			if(strtolower($wowss['region']) == 'eu' and !$realm_status['show_language'])
 				$wowss[$realm_status['type']] .= ' '. trim(strtoupper($realm_status['language']));
@@ -270,7 +270,7 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 	}
 	if($wowss['display'] == 'text') {
 		
-		if($wowss['show_language'] == 'yes')
+		if(isset($wowss['show_language']) && $wowss['show_language'] == 'yes')
 			$wowss[$realm_status['type']] .= ' ('. trim(strtoupper($realm_status['language'])) .')';
 		if(strtolower($wowss['region']) == 'eu' and !$realm_status['show_language'])
 			$wowss[$realm_status['type']] .= ' ('. trim(strtoupper($realm_status['language'])) .')';

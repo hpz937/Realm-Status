@@ -7,7 +7,7 @@
         <author>hpz937</author> 
  
     <!-- Version Date of the Module -->
-        <creationDate>2010-09-25</creationDate> 
+        <creationDate>September 2010</creationDate> 
  
     <!-- Copyright information -->
         <copyright>All rights reserved</copyright> 
@@ -22,7 +22,7 @@
         <authorUrl>hpz937.com</authorUrl> 
  
     <!-- Module version number -->
-        <version>1.0.0</version> 
+        <version>0.8</version> 
  
     <!-- Description of what the module does -->
         <description>realm status</description>
