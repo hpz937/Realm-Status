@@ -1,3 +1,3 @@
 <?php
-echo '<img alt="WoW Server Status for '. $data[0] .'" src="' . $data[1] . '" />';
+echo '<img alt="WoW Server Status for '. $data['realm'] .'" src="' . $data['imageurl'] . '" />';
 ?>
