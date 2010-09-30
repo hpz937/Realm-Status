@@ -47,7 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## http://53x11.com
 ##
 
-function wow_ss_global() {
+protected function wow_ss_global() {
 
 /*
 ##		Here you can preset all of the default variables for the script.
@@ -122,7 +122,7 @@ function wow_ss_global() {
 }
 
 public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$data_path = 0, $image_type = 0) {
-	$wowss = wow_ss_global();
+	$wowss =  modRealmStatus::wow_ss_global();
 	$realm_status = array();
 	if($realm)
 		$realm_status['realm'] = $realm;
@@ -144,7 +144,7 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 
 		if(!isset($wowss['xml_url']))
 			$wowss['xml_url'] = $wowss[strtolower($wowss['region']).'_xml'];
-		$xml_file = 'wowss-'. wow_ss_sfn($wowss['region']) .'-'. substr(md5(''),0,16) .'.xml';
+		$xml_file = 'wowss-'. modRealmStatus::wow_ss_sfn($wowss['region']) .'-'. substr(md5(''),0,16) .'.xml';
 		
 		## Check if we need to update XML cache
 		clearstatcache();
@@ -215,8 +215,8 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 		
 		unset($update);
 		clearstatcache();
-		if(file_exists($wowss['data_path'].strtolower(wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.'.$wowss['image_type'])) {
-			if(time()-($wowss['update_timer']*60) > filemtime($wowss['data_path'].strtolower(wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.'.$wowss['image_type']))
+		if(file_exists($wowss['data_path'].strtolower(modRealmStatus::wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.'.$wowss['image_type'])) {
+			if(time()-($wowss['update_timer']*60) > filemtime($wowss['data_path'].strtolower(modRealmStatus::wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.'.$wowss['image_type']))
 				$update = true;
 		}
 		else
@@ -228,7 +228,7 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 				$wowss[$realm_status['type']] .= ' '. trim(strtoupper($realm_status['language']));
 			if(strtolower($wowss['region']) == 'eu' and !$realm_status['show_language'])
 				$wowss[$realm_status['type']] .= ' '. trim(strtoupper($realm_status['language']));
-			wow_ss_image($realm_status,$wowss);
+			modRealmStatus::wow_ss_image($realm_status,$wowss);
 		}
 	
 		/* if(!headers_sent()) {
@@ -244,7 +244,8 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 				imagegif($image);
 			}
 		} else */
-			echo '<img alt="WoW Server Status for '. $realm_status['realm'] .'" src="'. $wowss['data_path'].strtolower(wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.'.$wowss['image_type'] .'" />';
+			//echo '<img alt="WoW Server Status for '. $realm_status['realm'] .'" src="'. $wowss['data_path'].strtolower(modRealmStatus::wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.'.$wowss['image_type'] .'" />';
+			return array('realm'=>$realm_status['realm'],'imageurl'=>$wowss['data_path'].strtolower(modRealmStatus::wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.'.$wowss['image_type']);
 	}
 	if($wowss['display'] == 'half') {
 		
@@ -263,7 +264,9 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 				imagegif($image);
 			}
 		} else */
-			echo '<img alt="WoW Server Status for '. $realm_status['realm'] .'" src="'. $wowss['data_path'].$realm_status['status'].'.'.$wowss['image_type'] .'" />';
+			//echo '<img alt="WoW Server Status for '. $realm_status['realm'] .'" src="'. $wowss['data_path'].$realm_status['status'].'.'.$wowss['image_type'] .'" />';
+			return array('realm'=>$realm_status['realm'],'imageurl'=>$wowss['data_path'].strtolower(modRealmStatus::wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.'.$wowss['image_type']);
+			
 	}
 	if($wowss['display'] == 'text') {
 		
@@ -381,13 +384,13 @@ function wow_ss_image ($realm_status,$wowss) {
 	}	
 	
 	if($wowss['image_type'] == 'png')
-		imagepng($back,$wowss['data_path'].strtolower(wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.png');
+		imagepng($back,$wowss['data_path'].strtolower(modRealmStatus::wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.png');
 	if($wowss['image_type'] == 'gif')
-		imagegif($back,$wowss['data_path'].strtolower(wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.gif');
+		imagegif($back,$wowss['data_path'].strtolower(modRealmStatus::wow_ss_sfn($realm_status['realm'].' '.$wowss['region'])).'.gif');
 	imagedestroy($back);
 }
 
-function wow_ss_sfn($text) {
+protected function wow_ss_sfn($text) {
 	## Returns safe text for inserting into file name
 	return str_replace(' ','_',preg_replace('/[^a-zA-Z0-9- ]/','',$text));
 }

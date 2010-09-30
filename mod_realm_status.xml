@@ -33,6 +33,8 @@
                 <filename module="mod_realm_status">mod_realm_status.php</filename>
                 <filename>index.html</filename>
                 <filename>helper.php</filename>
+                <filename>templ/default.php</filename>
+                <filename>templ/index.html</filename>
                 <folder>images/</folder>
         </files>
  
