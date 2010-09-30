@@ -304,9 +304,9 @@ function wow_ss_image ($realm_status,$wowss) {
 		unset($realm_status['type']);
 	
 	## Set Default Fonts
-	if(!$wowss['server_font'])
+	if(!isset($wowss['server_font']))
 		$wowss['server_font'] = 'silkscreen.ttf';
-	if(!$wowss['type_font'])
+	if(!isset($wowss['type_font']))
 		$wowss['type_font'] = 'silkscreenb.ttf';
 	$server_font = $wowss['data_path'].$wowss['server_font'];
 	$type_font = $wowss['data_path'].$wowss['type_font'];
@@ -340,6 +340,7 @@ function wow_ss_image ($realm_status,$wowss) {
 	imagecopy($back,$realm_status['population'],round(($backwidth-imagesx($realm_status['population']))/2),62,0,0,imagesx($realm_status['population']),imagesy($realm_status['population']));
 
 	## Ouput centered $server name
+	$vadj=0;
 	$maxw = 62;
 	$box = imagettfbbox(6,0,$server_font,$realm_status['realm']);
 	$w = abs($box[0]) + abs($box[2]);
@@ -375,7 +376,7 @@ function wow_ss_image ($realm_status,$wowss) {
 	}	
 	
 	## Ouput centered $realm_status['type']	
-	if ($realm_status['type'] and !$err) {
+	if ($realm_status['type'] and !isset($err)) {
 		$realm_status['type'] = $wowss[$realm_status['type']];
 		$box = imagettfbbox(6,0,$type_font,$realm_status['type']);
 		$w = abs($box[0]) + abs($box[2]);
