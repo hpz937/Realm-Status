@@ -1,17 +1,14 @@
 <?php
-defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 /**
- * Helper class for Realm Status Module
- * 
- * @package    mod_realm_status
- * @subpackage Modules
- * @link http://hpz937.com
- * @license        GNU/GPL, see LICENSE.php
- * mod_helloworld is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- */
+ * @package Realm Status Module for joomla 1.5
+ * @author Brad Cimbura
+ * @copyright (C) 2010- Brad Cimbura
+ * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+ * @link http://soylentcode.com/
+**/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+
 class modRealmStatus
 {
 /* The Following Code is Copyright (c) 2010, Nick Schaffner
