@@ -7,7 +7,7 @@
         <license>GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html</license>
         <authorEmail>admin@soylentcode.com</authorEmail> 
         <authorUrl>soylentcode.com</authorUrl> 
-        <version>0.8</version> 
+        <version>0.8.1</version> 
         <description>realm status</description>
         <files>
                 <filename module="mod_realm_status">mod_realm_status.php</filename>
