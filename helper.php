@@ -137,7 +137,7 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 		$realm_status['language'] = 'us';
 	
 	## Verify data path
-	if(is_dir($wowss['data_path'])) {
+	/* if(is_dir($wowss['data_path'])) {
 
 		if(!isset($wowss['xml_url']))
 			$wowss['xml_url'] = $wowss[strtolower($wowss['region']).'_xml'];
@@ -206,7 +206,75 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 		} else
 			$realm_status['script_errors'][] = 'Unable to access XML file.';	
 	} else  
+		$realm_status['script_errors'][] = 'Data Path Error.';	*/
+		
+		##New Status Code
+	if(is_dir($wowss['data_path'])) {
+		if(!isset($wowss['xml_url']))
+			$wowss['xml_url'] = $wowss[strtolower($wowss['region']).'_xml'];
+		$xml_file = 'wowss-'. modRealmStatus::wow_ss_sfn($wowss['region']) .'-'. substr(md5(''),0,16) .'.xml';
+		
+		## Check if we need to update XML cache
+		clearstatcache();
+		if(file_exists($wowss['data_path'].$xml_file)) {
+			if(time()-($wowss['update_timer']*60) > filemtime($wowss['data_path'].$xml_file))
+				$update = true;
+		}
+		else
+			$update = true;
+			
+		if(isset($update) && $update) {
+			$realmname="Whisperwind";
+
+			$fp = fopen("http://us.battle.net/wow/en/status","r");
+			$inrealm=0;
+			$output="";
+			while(!feof($fp))
+			{
+				$line=fgets($fp);
+				if(preg_match("/$realmname/i",$line))
+					$inrealm=1;
+				if($inrealm && preg_match("/<\/tr>/i",$line))
+					$inrealm=0;
+				if($inrealm)
+				{
+					$output .= trim($line);
+				}
+			}
+			fclose($fp);
+			$output=preg_replace("/<span class=\"filter-text\">[^<]*<\/span>/","",$output);
+			$output=preg_replace("/<span[^>]*>/i","",$output);
+			$output=preg_replace("/<\/span>/i","",$output);
+			$output=preg_replace("/<\/td><td[^>]*>/i","|",$output);
+			$output=preg_replace("/<\/td>/i","",$output);
+			$rs=explode("|",$output);
+			if($rs[2]!="N/A")
+				$realm_status['status']='up';
+			else
+				$realm_status['status']='down';
+			if($rs[1]=='Normal')
+				$realm_status['type']='pve';
+			elseif($rs[1]=="(PvP)")
+				$realm_status['type']='pvp';
+			elseif($rs[1]=="(RP)")
+				$realm_status['type']='rp';
+			else
+				$realm_status['type']='error';
+			if($rs[2]=='Low')
+				$realm_status['population']='low';
+			elseif($rs[2]=='Medium')
+				$realm_status['population']='medium';
+			elseif($rs[2]=='High')
+				$realm_status['population']='high';
+			elseif($rs[2]=='N/A')
+				$realm_status['population']='offline';
+			else
+				$realm_status['population']='error';
+		}
+	} else  
 		$realm_status['script_errors'][] = 'Data Path Error.';	
+		
+		
 			
 	if($wowss['display'] == 'full') {
 		
