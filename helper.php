@@ -125,6 +125,10 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 		$realm_status['realm'] = $realm;
 	else
 		$realm_status['realm'] = $wowss['realm'];
+	if($region)
+		$realm_status['region'] = $region;
+	else
+		$realm_status['region'] = $wowss['region'];
 		
 	## Overide default values from script call
 	foreach ($wowss['get_array'] as $value) {
@@ -224,9 +228,13 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 			$update = true;
 			
 		if(isset($update) && $update) {
-			$realmname="Whisperwind";
+			$realmname=$realm_status['realm'];
+			if($realm_status['region']=='eu')
+			  $region="http://eu.battle.net/wow/en/status";
+			else
+			  $region="http://us.battle.net/wow/en/status";
+			$fp = fopen($region,"r");
 
-			$fp = fopen("http://us.battle.net/wow/en/status","r");
 			$inrealm=0;
 			$output="";
 			while(!feof($fp))
@@ -252,7 +260,7 @@ public function wow_ss($realm = 0,$display = 0, $region = 0, $update_timer = 0,$
 				$realm_status['status']='up';
 			else
 				$realm_status['status']='down';
-			if($rs[1]=='Normal')
+			if($rs[1]=='(PvE)')
 				$realm_status['type']='pve';
 			elseif($rs[1]=="(PvP)")
 				$realm_status['type']='pvp';
